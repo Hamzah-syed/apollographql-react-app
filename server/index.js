@@ -1,34 +1,22 @@
-const { ApolloServer, gql } = require("apollo-server");
+const { ApolloServer } = require("apollo-server");
+const typeDefs = require("./schema");
+// const { createStore } = require("./utils");
+const resolvers = require("./resolvers");
 
-const userData = [
-  { id: 1, name: "hamzah", email: "hamzah@abc.com", age: 21 },
-  { id: 2, name: "areeb", email: "areeb@abc.com", age: 22 },
-  { id: 3, name: "asim", email: "asim@abc.com", age: 23 },
-];
+const LaunchAPI = require("./datasources/launch");
+// const UserAPI = require('./datasources/user');
 
-const resolvers = {
-  Query: {
-    users: () => userData,
-  },
-};
+// const store = createStore();
 
-// your data.
-const typeDefs = gql`
-  type User {
-    id: Int
-    name: String
-    email: String
-    age: Int
-  }
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  dataSources: () => ({
+    launchAPI: new LaunchAPI(),
+    // userAPI: new UserAPI({ store }),
+  }),
+});
 
-  type Query {
-    users: [User]
-  }
-`;
-
-const server = new ApolloServer({ typeDefs, resolvers });
-
-// The `listen` method launches a web server.
 server.listen().then(({ url }) => {
-  console.log(`🚀  Server ready at ${url}`);
+  console.log(`🚀 Server ready at ${url}`);
 });
