@@ -1,9 +1,11 @@
-module.exports = {
+// const datasource = require("./datasource");
+
+const resolvers = {
   Query: {
-    launches: (_, __, { dataSources }) =>
-      dataSources.launchAPI.getAllLaunches(),
-    launch: (_, { id }, { dataSources }) =>
-      dataSources.launchAPI.getLaunchById({ launchId: id }),
-    me: (_, __, { dataSources }) => dataSources.userAPI.findOrCreateUser(),
+    // car: (_, { plateNumber }, { dataSources }) =>
+    //   dataSources.mvrpAPI.getACar(plateNumber),
+    cars: (_, __, { dataSources }) => dataSources.mvrpAPI.getAllCars(),
   },
 };
+
+module.exports = resolvers;
